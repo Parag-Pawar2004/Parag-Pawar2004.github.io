@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parag Pawar Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Plan: cool steel neutrals with one copper accent (metallurgy meets qubits). Left-aligned ledger layout: narrow label column, wide content column. */
+:root{
+  --bg:#F3F5F7; --panel:#FFFFFF; --ink:#141A21; --muted:#56606B; --rule:#D5DBE1; --accent:#A8481F; --accent-soft:#F4E3DA; --ok:#1E6B52; --ok-soft:#DDEFE8; --wait:#7A5A12; --wait-soft:#F5EBCF;
+  --display:"IBM Plex Serif",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1419; --panel:#161D24; --ink:#E7EBEF; --muted:#9AA5B1; --rule:#2A333D; --accent:#E39266; --accent-soft:#3A2519; --ok:#6FD0AB; --ok-soft:#173529; --wait:#E6C770; --wait-soft:#3A2F12; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1419; --panel:#161D24; --ink:#E7EBEF; --muted:#9AA5B1; --rule:#2A333D; --accent:#E39266; --accent-soft:#3A2519; --ok:#6FD0AB; --ok-soft:#173529; --wait:#E6C770; --wait-soft:#3A2F12; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--body)}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--rule)}
+nav .wrap{display:flex;gap:6px 22px;flex-wrap:wrap;align-items:center;padding-top:12px;padding-bottom:12px;font:500 13px var(--mono)}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--accent)}
+nav .name{color:var(--ink);margin-right:auto;font-weight:500}
+header.hero{padding:48px 0 28px;display:grid;grid-template-columns:1fr minmax(0,300px);gap:32px;align-items:center}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+h1{font:600 clamp(32px,5vw,46px)/1.12 var(--display);margin:0 0 14px;text-wrap:balance}
+.lead{font-size:18px;max-width:60ch;color:var(--ink);margin:0 0 18px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font:400 13px var(--mono);color:var(--muted);margin:0;padding:0;list-style:none}
+.circuit{width:100%;height:auto;color:var(--ink)}
+section{padding:34px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:170px 1fr;gap:12px 32px}
+section>h2{font:500 13px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:6px 0 0}
+.stack{display:grid;gap:18px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:20px 22px}
+.card h3{font:600 20px/1.3 var(--display);margin:0 0 6px;text-wrap:balance}
+.card p{margin:8px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:0 0 8px;font:400 12px var(--mono);color:var(--muted)}
+.pill{padding:2px 9px;border-radius:99px;font:500 12px var(--mono);white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.wait{background:var(--wait-soft);color:var(--wait)}
+.pill.done{background:var(--accent-soft);color:var(--accent)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0;padding:0;list-style:none}
+.tags li{font:400 12px var(--mono);border:1px solid var(--rule);border-radius:4px;padding:1px 8px;color:var(--muted)}
+.todo{color:var(--muted);font-style:italic}
+dl.kv{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:8px 20px;margin:0}
+dl.kv dt{font:500 13px var(--mono);color:var(--muted)}
+dl.kv dd{margin:0}
+ul.plain{margin:0;padding-left:18px}
+ul.plain li{margin:4px 0}
+.note{font-size:14px;color:var(--muted)}
+footer{border-top:1px solid var(--rule);padding:24px 0 48px;font:400 13px var(--mono);color:var(--muted)}
+@media (max-width:760px){
+  header.hero{grid-template-columns:1fr;padding-top:32px}
+  .circuit{max-width:300px}
+  section{grid-template-columns:1fr}
+  dl.kv{grid-template-columns:1fr;gap:2px}
+  dl.kv dd{margin-bottom:10px}
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+#stage{position:relative;width:100%;max-width:420px;justify-self:end;touch-action:pan-y}
+#c3d{width:100%;aspect-ratio:1/1;display:block;cursor:grab;border-radius:8px}
+#c3d:active{cursor:grabbing}
+#tip{position:absolute;left:50%;top:6px;transform:translateX(-50%);background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:3px 10px;font:500 12px var(--mono);pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+#tip.on{opacity:1}
+.hint{text-align:center;margin:4px 0 0;font:400 11px var(--mono);color:var(--muted)}
+.card.flash{animation:flash 1.4s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+.card{transition:transform .25s ease, box-shadow .25s ease}
+@media (hover:hover){.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px rgba(0,0,0,.45)}}
+@media (prefers-reduced-motion: reduce){.card.flash{animation:none}.card{transition:none}}
+.me{width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);display:block;margin:0 0 14px}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <span class="name">Parag Pawar</span>
+  <a href="#research">Research</a><a href="#projects">Projects</a><a href="#education">Education</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+</div></nav>
+
+<div class="wrap">
+<header class="hero">
+  <div>
+    <img class="me" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCADcANwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxHJpM0UlfPn7EFFHekpiuLSUtJQIM0ZxSZozQS2LmkJprMFGScD3rNvNbihysfzt+laQpym9DkxWOpYeN6jsaZbFQy3cMIy8ij8a5m41O4uCdzkD0FVS7N1YmuyOD/mZ81X4m6Uo/edMdbtQSNx/Knf2zaYz5h+mK5bNFa/VIHD/rHivI6oa1aE/6wj6ipY9StpSAsy/TpXIUBiOhpPBw6Fw4lxCfvJHbhgRkEEU7NcjbanPbDCuce9a1hraykJMQpPeuWphZR1R7mD4go1moz0ZsUU1WDDIOaUVynvqSeqFpaQUZoGmKKM0ZooGFKOlJRmkMXNPB4plOFJloYaKKTNMhsWkooNMkKSlptAmGajmnSFC7kACllkWNSzHAHc1zOpag11KQpPljoK6KFF1H5Hj5pmccJDT4mO1DVZLliiHbGOgrPzSUterGKirI/P6+InWm51HdiUUUVRiFFFFABRRRQAUoODkUlLQBu6RqLO3lueAMCtpTnpXFJI0Z3KSD7VqWOtyRkJN8y+veuGvhm/eifV5TncacVSrfedFg0tRxSLKgdSCDzxT8157Vj7GE1JJoWgUd6KRYtFJRQMWng8UynCkyojaTFLSUyWFIelLSUEiUE0GoriYQRNIewqkruxlUqKEXJ9DJ127wBCp68msOpLmZp5mdj1NR17NKHJGx+ZY/FPEVnUYlFLT4oJJmCxozE9gM1pc5Em9iOlrotK8Ba5q5Hk2jKD3fiuqt/gXrkseWliDHsKydeC3Z0wwdaW0TzKivSW+BfiQOFAiIPeut8Nfs/GNll1SYSHrsA4pOvBK6KjgKrdmrHhYVj2NGxh2NfTb/AAa0ZUwloin6Vi3vwksg7EwjaowFA61g8al0OtZVK258+4NJXo+qfDKe3YtHzvc7B7Vyup+GLqxlKlCQOh9a1hiYSOerl1WCvuYdFDKVJB7UldBwbG1od8Q/kucqelb/AGrkNOYLdx5OOa64dK8zFwSldH3fDmIlUouMnsOzijNAoxXGfRhQKKKBoWlBNJilxSLQlJS5pDTJYlHSjvRigliY4rL12XZa7R/Ea1DWH4hBxH6V0YZXmjx86m4YWVjEopKWvXPzk2PDWgS67fJAg+XPzH0Fe6+Fvh/pmmwo32dWkI5YjJrifhNp6BBOcbmPUivbbBAFGQMV5GLqyc+VbH1OX4aEaalbUsadpFvAF2RKo9hW5DaKoAwKqWxANacOPas4I7J6bDhbLjoM08QgY7VKMfSnDp0yK2sYNlaSMDjArOu7ZSpGBWnKfm6VSnYFSCKmSNInJahpqMWYoDtBC8VwuraJFMjAqCeQOOleqzRA5BHWsHVNPRY2YIMdcCsl7ruVJXR8v+J9LbTdRdQMKTn6Vj16j8SNOj2M2wBhyGry417NKV4pnymLp8lRofAcSqfeuyiO6JTjtXFocOMV2Fo262jPqorkxq0TPouGJ+9OJPS00UtecfZoWlpKKBoWlyRSUoz2pMpCUlLSUxCUGlpKCRD0rG8Qj90h962TWVr65tQfQ10YZ2mjyM6jzYSZzlKOooqzpljJqN7DbRjLSMFFes3ZXPzqMXJpI9a+EaSyW2WX5R0r2G3cBRXGeGNJt/D2lxxJgALlif8AGs3Vfi9pmnXZtbUiYKcPL/Dn0FeW6Uq0/dPqFWjh6aU2esWpY4OTWrakkda8MT47WkGCbdyo7etbuj/HzQLqdbebzIGJADuPlJrf6nOJkswpzdrnsqJn1p4U1gaV4003UiI4pQXxmte61m2tYTKWBAGTzS5LGrmStASfmBqlcRxx8s2PrXC+JPi7HbRyiyhdyvHTkHPSvE9V+JXjrxNestq84j3FVSBMfrWkaCe7OerivZ6JXPobUNWs7Nj5s6L7E1lzarbXcPmQSrLH0ypzivCv+EU+IWoxeZJHMVbtI/IqrYp4v8MX26SKYITh0JyrCieGpte6zOnj6nNaUdDuPiHoh1TT5DCfnUbhzXh0qGORkYYIODXvNpqB1XTi7grIR8wNeOeK7P7JrMyhcBjuFThpNNwZlmVNOKqIxx1rrNLffZRn0GK5Ouq0ddtkme9VjPgOnhtv6w0uxeFLSClrzD7xB34o7UUUhoXNFFFIpCGilpKYgPWkPvS0h6UEiVR1dN9k/tzV7HFQ3UPnQsnqK0pO0kzix1N1KEorqjju9dR8OYPP8SQjGdqlvpXNzwtE5BHeuv8AhVj/AISTB/55nH6V7E9Yux+cYeLjWSZ6d42S7m0UWtorFpcAlfSub0D4aaXaR/adcmDKeSC2MV6faaYl2uW5IHFcD4+j1e1nSGwsWmOeHI3BPfHrXDTqSS5YnuVaMZPmmrlxvCXg3UIAkGlzTbeBKpIB/E1zmo/DzRIJtyi4gXPdsqPxFVdT8IarqNvYT2F3eXl2T/pFtdkxoD/sjgYru/h98NXsdIvBrUb/AG25kBieC4ISFQOnOc5zXRySavzanIuVz5fZ6Frwbp0di8aQSEgLjJOciu+uNLmuYCN2EIrF0zw7LpjKJWjdlPDIMbh7+9dvGmbIDHauVylezZ6PJG2h5Tr2kQWshLqG4547VzsPiXTfDznzEhtUU4GE3vk+w6V6fqejfbHfkgtwGxnFYus+CbO98N3WiC2hSGbDGVYsSBhyDu6n8aukr/EzKtFxX7tanG3HxcsHkMMV60RGMedbkZ/wFW7HX4PEseyaOF8n5ZI2yG96qeH/AIaHwze3N0EXU55YjFH9rAKID1JHOTVjwp8LJbDVm1GZggY5EUQIQU6qhvFk4f270qJF5tJayiZlAII44ryT4mwLHqcEgGNyYr6H1i0VLXaB0HQV4F8VFVbq3AHPzVGGbcyMwj+6ZwajLAetdfYoYrWJT6VieHdLbVL4JzsRWdiB0AFdEAAMDpV4ya0idvDOGa5qz9BaWkorzz68BThSUtA0FGaSloGgpKO9FACUUtJQSFJiloFMTVytrfh/bYQ38QZ4nPz4Gdh70z4cuLXxZEjNwQy/X/OK7Twe8N6lxpdzgpJ8y5/WuR1CzHhjxzCqt+7EikH2PFehhajknFnxmcYSNKsqse59EaG++JSvORWw2jQXfMibj64rC8JOstqjE9a7uxhVlGBmsGtTeO12ZNv4atk+bLAitJdLgij4BbjvWqlpkcCia28uIkDmtI3SM5TTZgmAeZk9q0UA8j8Kz5nZ5jGmcA81p29vI0WACeKhXZT0RmOFLcDHNWYoFKYxVK+jlgm3qM+1aul7LiMepFXG+w5bXK4so25Ea5+lNls9qk7MCt9LFRzVS9jCg+1Jxa3JjUTdkcL4gUpE/wBK+dPijKJNRgTPzAN/OvpPxEFEMgI7Gvl74hTbvERXOdg/rVYZe8cmYtezOm0LQj4Z8KTahOv+k3yBEz/CprFrqfEurR3uhabFDuCKoI3cZ4rlq5azvNs+qyukqdBKIUtJ3orI9EWikpaBoKX8KSloGFJS0lABSUtAoJEoo70UAT2N3JYXcdxGSGQ54qn4/uVur60v1xvkXJI74PFS96h8YXcV1ommRqAJbZnRsDqDgg11YWVp2PBz6nfDua6Htvw41AXekW8gOdy55r1LTZAUU5xXz58INaB0pYC2GiOPwr2vSNQVoxhs1pVXLJnlUJqdNHZ27gjnpVbVLnZA208kVmDU1iQktj3rjPF/xS0Xw7A/2m6Vpf4Y15ZquDclZESioPmkxmu+KNUtH26XYx3TKCXjMm1yfYd6t6Z8R1OnhrqKW1uNuGhcfMD6V4R4k+L2q6xqG/TIPJgU8EJlz+Na2keLPEF1p8rXHh+8kuFXdDKIyd36VoqDjq2ZvGwk7RVz0O68aeIGuHufsMEFiGGGkfLyfRRXdeGbxrmEXDIU38hTwcV8weJtY8bwtHPdWl1p+Rn5OhH9K2PBXx11HQo1tdVia8jHSQH5x/jVKg90xf2hD4Zqx9Zi5XyutZd7cAhua4Lwr8WNJ8ThY4J/LlIz5cnDV0N1fMYy2eMVz1W4u0jooxjL3osxPE90Fhck9ulfLPi+5F14iuXHQNivevHuurZ2FxIW6Icc185NI99fF3YlnfvWuHWnMedmE+ZqCPRNatIrS00sRys7NaKzKTnFZVOluJbkq0rbmVQo9gBgU3FedN3k2fd4SDhSjF9he9FJRUHSFLR3ooAKWkooKCilpKACiikoJCjpRQaYCEVU1CATwFSM+lXKY65XmqhKzTObE0lUpuLKvgbWW0vUWhLbUevoHw5q6zW8bK2QQK+XrktaXxZeCrZFeneAPGIfy7Vidy+tepVhzw5kfCYSt7ObpPodj8XPHlz4e0+O1tOJrnIDf3RXgqNdareB55WZpG++/OTXtnxA8OnxZHYnmMwHLse4PUCt6y8Cafb6XCsVtHlFHbke9ZUq6pqxvVws69S8n7pwXhDwalh/pkkMtw5xhSMYr0y3TUokXyrCVwwAC5A21STUh4fJFxteNOeeoplx8edAsnCfOWQ4+VM10qXtNbnqL6vQikkizq2mandW2yXTcqwxy3avLvFfgCOziaRLGXezYUxnJBPt3r0U/G3T9aPlWqSux7lMAVcsrZtWbzpWLA889BSnL2aIqKhXhayufO9xo2saDdJOIp4mQ7lkXtX0H4X8UTap4PgvbolZSmCT/ER3q3rOkWctu0TRo2VI5FcN441238NaENPtiiuV2oq1y87rPlscEKKwqcr6HH/EzxQ19cixhk+ReXIPWuN0iPfeJkdDmqs0rzyGRyWYnrW9odoI4jKw+ZuBXRVapwsjiwFKWLxS8tTVHFLQKWvIZ+ipBmgZoxQKCwpaQdaWkCCjNFLQMKSiigGFJRRQIVhg4pKM5opiEzQaCOaDQJmHrtpkiVR9ag8N6h/ZurQSsfl3DNb1xB58ZjxktwBXJXML2tw8bgqynBB6ivUws+aNmfCZ5hvq9dVY9T6T0TVYLm2RmwwIFdZZMssWFOQe1fLuj+NNQ0wqpkLoMcH2r03wv8WLRows77JO+/j8BUVMM94l0MfCSs2d74u8OR6nYSooKyEdRXz1q/ha9jv3j2EIGPuQK94j8eWc1q8jSoFIwvNcBrOt2d088kLLujy5JIG5jW+FjKDszDHKNVblf4aeHIrpl3Arg5LHvXtdpa29pAEjI4HrXiOmeNLewjXYUVlXHHUmtC7+KENvbGRJSzA42g+9XiKMqjuTha9OjC1zvPEupRW0sce/BfPPpXgXjbVBf6mwWQyKpPzE1c8R/EO71j5YgYlwRnvXIO5diWJJNTRpezObGYxVFyxJbOA3FwqDua62GIQxKi9AKo+FNBur61vNRjjJitVBY/U1pVyY1yTSZ9Fw1RgqbqdWFLSClrhPqQpKWgelAAKWkpaQ0FGaO9FAxaSlpKBhSGlNJQSFFFLjNAhOnejBY8cn0Fb3h/wTrPiNwbW2ZIe8zjCj/GvUPDvwysdCVZ7gC5uR1dxwv0FehhMuq4h+6tO542Y57hsEnzu77HnvhPwNfajdw3N3CYbVTu+fgv6cVmfEnwA1pLNe2ylj98gdx617ZpMyXt7erGMiDah44Bxml17QxqVoyqoLgZX39jX1McpjQouC1Z+c43iJ4yupTVonyCylSQaASOleneLvh/58jy2UYgnQ/PERjmvOLuwuLGYwzxMjjsRXjSVnY2lTa1Ww9dVvEhEQnk2DoM9Kha4lYsS7Zbrz1qMqQeQRRTUmS5PqLub1NIST1NFPhhkncJGhZj2ApXbJGVo6Notzq9ysUKEjuccCtrQvA13qDgzIyLkce1eseD/AyxTrb2yHJwZG/urVwhzSUVub+yUIupU0SNTwD4PS30GaJ4tqzL5ZwOCO9clrvww1XTTJJY4vYV52rw6j6d699sNJSztY4VXCqu1QfSsvVrWSy1FJExtbAf6dq9WvldPERUXo0edguJK2DqylDWL6HzNJE8MhjkRkcHBVhgj8Kbivo/WfAeieKomNzbhJu08fDD/GvKfF3wn1nw2HubYG+sh/y0jHzKPcV8vi8urYd6q6P0TK+JcLjUot8suzOGxRilIwcHOaK88+kVmJS0mKWgAoopaBoDRiijFIoSjFWLKwutQuFt7SCSeVzgIgyTXrPgv4GzTtHd+IX2Lw32VDyf8AePb8K6KOHqVnaCPPx2Y4fBw5q0rHmeheGNV8R3Ah02zkmOeWAwq/U17H4P8AglY6cqXWtst5cdfKH3EP9a9N0vRLPSbZbazt44IlGAiLgVamARDngCvocJlEIe9U1Z+dZtxbWr3hQ91fiZCWEUCCKGJY0TgKowKyvEtyukaVPdlDiNc8103lfJ5kgA5yo9q5DxnA+qSQ6cFdomPnTY4wB90V9Hh4pNJbHxOJrzkm27sy/h5aP/Yq3c4Ky3TtK/1J/wAMV0/2Q7jjoag8JxrBaC2MYEY4ANbr2LR/Mh3A9vStK0/fZhdtHF694UTUFaSMCO47Pj73sa8z1rwlBPcPFd2oWdOxHX3Fe9mBmGQM46is/UdDtNVj2TIAR91u6mvKxmDVX3o6M9jLc2dD3KmsT56uvh7ZXCEm3P1XrWJc/DWBiRE7xkf3ua9v1bQZdGfMvzQscLKOh9j6Gs42kMh3FRXz9RVIO0kfZUfYV488TyO1+F0TECSWVz7DArq9F8B2lhjy4FHqSMk120NnGCAqium0nwm1yqzXI8iHqB/E3+FVShVqu0UTiJ4fDR5pHM6F4Xlu3EVtFhR96UjhBXo2kaFbaXbBYkx3ZyOXPqavWdpHbQiOCIJGvb1q4sLkdPzr3cNhVRV3ufG5jmksVK0dIkVpbedI0jDhRwKxtej852ULn5lHHWuniAiQjIz3rnb6ZBfRxfxysSv0Fd1JtyueU2krDrMwQRiMq4OMksO1XIwh4xuRv4SKjnh8yITpw6Dn6VYaMvEkyDJUcj1FKaUlqa0pyi9DgPHPwb0vxCkl3pgWxvj83yj5HPuO1eFeIfCureGLo2+p2jxH+F8ZR/oa+vLVw6dPzqHVNDsdatXtr22inicco4yK8DGZRGXvU9GfaZRxVWw9oVvej+J8Z0Cva/GHwEG57nw7Pt7/AGaXp+Df415Hq2h6jodwbfUbSW2kBxh1wD9D3r5+th6lJ2mj9EwOa4fGRvSlr2KFFFLisD0ySCCW5kWGGN5JGOAijJNekeEfgrqGr7LjWHNnbnny15dh/SvV/CHwz0nwxGvkQia5I+aeQZY/T0FdUkXlE7SpA/hA5r6HB5Nf3q33H5/m3F9r08L95jeHPBWjeGIBHYWiRt3kPLN9TXQRwjj+VIkZcqTkZPSrBwnHBPrXuQpQprlgrHweJxdSvLnqyuw8rIOTj6VAQk03lLjanLn+lTTyiKAsOWPCj1NVFItIgh5kb5mNaxRxtjroqWJPCKMkj0rEhtDI0t5JlvNOceg7Vp3mZEWDnMp3NjstSxQqsTbOR6VrF8qOeWrMLT4R++CcMjfnmtq1lEihG4YVUswkWpPHyPNXp7irk0GxxKnBqpyuybWJTBhgwwTTJbYP8xQL75qVpF8kOSAfSvOfij8WLXwjb/YLdy2ozISgUZEQ9TU06cpysi4xvojpNcuosf2fHbC8eT70RPCr6k1jQ+G9Ahi81rR0jz8zzTsoX6c151pPxf0vTLIMBdS3MvzSnHLE9TmpJ9bn8aQf2tpD/bbizy0umO219v8AeA6NXXPARfxo6KFTEQ0i2kdidS0XSpXvdJ05tUkjbAxKQF9Qua7Tw1r2neIofOgP75eHhk4eM+4rwzSvjDpmnWktrNod0tw7EyEMBtPpiq2leJ7+/wBYvNe0WNLe7s4QcXNxtUR5yzMB9709qJ4KNOm3FWHN1qs7VHc+mxEwHyomO1BjOMyOMegrnPAnjaDxZpxc+XHeRACaFXDBT6g91NdDJmU8dBXnNNOzMZw5dCF2MmVThelYV3atJrUcgHESbc/Wul2LHGT2AyazraA4LuMs7bsmtKcrGUo3JIUDl436EVNbx+Snl0kqmNkcduDVhk3DcKls1iiq0RhcSBcxn73tVlSwUN1HanoOqnkGqyu0EvlN9w/dP9KW5rsTA785HbtWbq/hvTtct2gvrWKdD2dQcVdH7tywJ5FSNOI13EcVnOlGas1c3oYidN80HZnini34CRHfPoUxhbr5MmSp9ge1eW3/AIJ8Q6dcvbz6TdF17om4H3BFfXySJMuQRg9jUD2cDtkjFeRXyaE3eGh9dgeL8RRjy1VzF+MJGgwvXrWfdL5Fykg+4xwa0PUdqp6gAYGB5r2YbnxkmTTDy0DKKghXe+ZDz1x6U64dhEmD1AomHlWTMvBx1prYyk9SMMks7TE5jhGB9arpILuVnYbUXnJ9KS5Pk20aJwCMn3pAxWwGP+WjYNaJWRm2SwBpC85Gd/Cj2qeNf3ZwMGnBBGAqkgAU8cw5PWpbCKMiQganC4XDEkcmr0syRbtzfhVG9UPLETwQ3UVjeNL+40+K2tbZ/LW4fa7j7+PY9q2UeZozm7IZ4h1+aCF4NNQXF23yqoOQnu1eReItNXw+GbxPp39s6fcuXlmTi5t2burd19q9p0HR7OxX91GctyzMckn1Jqn4t0y1vLCeOaIOu0jB9K6ac1F8iQqU3CXMfPup/Dn7bp7ax4QvxremgZeNB/pEHs6da5Kxlv8ATbpLu0upbaeI/KyEhgRVq71O+8E+K5ptCu5rN43ONjcEehHcexr0Tx7o1hqfgrT/ABebaO11O6A8/wCzDZHIT1JXnn6V3RqOL5Z6pntNe6pxM2M2XxGs2SSOC08VRLujZMLHfgdQR2f+dcf4Vl1H/hMLS2tom80yGGSIjqpyGBHpjNZ8t7PZTwT28hikjYOrKcEEGvbPhvpNndfEC+1KSFftEkEMpIHAZ0BYge5p1n7NNdDOU+WHO9zS8OfD6++H8MWqaYWedR+9Qn5ZV7j/AAr1fQNdt9cslnhBRx9+JuGQ+hFXmgje2KsoIxXD+IidAlS/08+VN5iqw/hcE9CO9eU5KsrPc8xtp3Z3Ny+IjkcngUpTCoKhkPmi3Zu+DVxgOK5HoaR1IpkDIBin2/K7Sc0P/SlhOMYpPYtLUdtO81VuFEmYzwQcg+lXv4vwqjefLKpHGTRB6lS0GrukjIIww4pyDERVuc0kg2zIR/GMGnv/AKgnuKskh8vaFKnGKrXCO8mVLYHHWrFqxf73NTeUo9ad7Mrc/9k=" alt="Portrait of Parag Pawar" width="96" height="96"><p class="eyebrow">Quantum computing · computational materials</p>
+    <h1>Parag Vijay Pawar</h1>
+    <p class="lead">Dual-degree undergraduate (BSc Hons Data Science and AI at IIT Guwahati, BTech Metallurgy and Materials at COEP Tech) with a minor in Quantum Computing. I build quantum optimisation, QUBO and sensing workflows, and test them on simulators and IBM hardware.</p>
+    <ul class="meta">
+      <li>Seeking: winter research internship, 14 Dec 2026 onward</li>
+      <li>Expected graduation: 2027</li>
+    </ul>
+  </div>
+  <div id="stage" aria-label="Interactive 3D Bloch sphere. Each point is one of my projects; drag to rotate, click a point to jump to it.">
+    <canvas id="c3d"></canvas>
+    <div id="tip" role="status"></div>
+    <p class="hint">Drag to rotate · click a point to open the work</p>
+  </div>
+</header>
+
+<section id="research">
+  <h2>Research</h2>
+  <div class="stack">
+
+    <article class="card" id="r1">
+      <div class="row"><span class="pill wait">Under review</span><span>Quantum Studies: Mathematics and Foundations</span><span>Zenodo DOI 10.5281/zenodo.23854141 (embargoed)</span></div>
+      <h3>Spectral decay and weight-independent fading-memory bounds for reset-gated quantum recurrent maps</h3>
+      <p>Authors: P. Pawar*, R. Gabhane, R. Ambekar, P. Devkar, M. Nivelkar*, S. Bhirud. Supervisor: Dr. Mukta Nivelkar, COEP Tech (January to November 2026).</p><p class="note">Abstract released on publication.</p>
+    </article>
+
+    <article class="card" id="r2">
+      <div class="row"><span class="pill wait">Under submission</span><span>Target: Quantum Information Processing</span><span>Zenodo DOI 10.5281/zenodo.23854656 (data embargoed)</span></div>
+      <h3>A quantum-memory advantage in copies for tracking drifting quantum sources, observed on a superconducting processor</h3>
+      <p>Authors: P. Pawar*, R. Gabhane, R. Ambekar, P. Devkar, M. Nivelkar*, S. Bhirud. Supervisor: Dr. Mukta Nivelkar, COEP Tech (January to November 2026).</p><p class="note">Results held back until publication.</p>
+    </article>
+
+    <article class="card" id="r3">
+      <div class="row"><span class="pill done">Manuscript complete</span><span>Under submission; target: Physical Review Materials</span><span>with V. P. Pawar</span></div>
+      <h3>Solute decorations that trap radiation point defects in austenitic Fe–20Cr–10Ni: an active-learning cluster-expansion QUBO with classical, simulated-quantum and gate-model quantum optimization</h3>
+      <p>Mentor: Dr. Manisha Kulthe, Head of Metallurgy, COEP Tech (June 2025 to December 2026). An active-learning cluster-expansion QUBO workflow validated against EAM, benchmarking classical, simulated-quantum and IBM gate-model QAOA solvers for radiation-defect trapping, with a Quantum ESPRESSO sign test and hardware runs on IBM Quantum (ibm_fez).</p>
+      <ul class="tags"><li>QUBO</li><li>QAOA</li><li>quantum annealing</li><li>cluster expansion</li><li>Quantum ESPRESSO</li><li>Qiskit</li></ul>
+    </article>
+
+    <article class="card" id="r4">
+      <div class="row"><span class="pill wait">In preparation</span><span>Independent research · March 2026 to present</span></div>
+      <h3>Budget-aware adaptive sensing with noisy qubits</h3>
+      <p>Chooses between Ramsey, Hahn-echo and low-visibility readout under finite shot budgets and uncertain dephasing. Fisher-information crossovers derived analytically, checked on a Qiskit Aer digital twin and IBM ibm_fez (156 qubits), with an audit of a public spin-qubit dataset.</p>
+      <ul class="tags"><li>quantum metrology</li><li>Fisher information</li><li>Qiskit Aer</li><li>IBM Quantum</li></ul>
+    </article>
+
+    <article class="card" id="r5">
+      <div class="row"><span class="pill wait">In preparation</span><span>Independent research · March 2026 to present</span></div>
+      <h3>CertiPES: Certified, Gauge-Transported Quantum Simulation of Potential-Energy Surfaces</h3>
+      <p>An end-to-end pipeline combining certified eigenvector continuation, active-orbital gauge transport and noise-mitigated variational circuits to trace potential-energy surfaces on quantum hardware simulators, with 23 pre-registered hypotheses and automated verdicts that report supported and unsupported claims.</p>
+      <ul class="tags"><li>PySCF</li><li>Qiskit</li><li>PennyLane</li><li>pytket</li><li>variational circuits</li></ul>
+    </article>
+
+  </div>
+</section>
+
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="stack">
+
+    <article class="card" id="p1">
+      <div class="row"><span class="pill ok">Public code</span><span>IBM Qiskit Fall Fest 2026 · QC@IIT Indore · solo entry</span></div>
+      <h3>Quantum Traffic Gridlock: QUBO and depth-4 QAOA for signal control</h3>
+      <p>A scenario-independent QUBO for two linked intersections, built by projecting the exact queue recursion onto degree-2 Walsh functions while keeping the switching cost exact. Eight qubits, depth-4 QAOA, 300 objective evaluations, 4096 shots. On the public scenario the surrogate correlates 0.995 with the official cost and its minimiser is the true optimum. Over 150 random scenarios the mean surrogate regret is 1.2%. The report claims no quantum advantage.</p>
+      <p><a href="https://github.com/Parag-Pawar2004/Quantum-Traffic-Gridlock/">github.com/Parag-Pawar2004/Quantum-Traffic-Gridlock</a></p>
+      <ul class="tags"><li>QAOA</li><li>QUBO</li><li>Walsh–Fourier</li><li>Qiskit 2.5</li><li>OpenQASM 3</li></ul>
+    </article>
+
+    <article class="card" id="p2">
+      <div class="row"><span class="pill ok">Public code</span><span>NASA battery dataset</span></div>
+      <h3>Bifurcated Quantum LSTM for battery state-of-health prediction</h3>
+      <p>A bifurcated quantum-classical LSTM with variational quantum circuits in Qiskit, estimating battery state of health from NASA degradation data. 10.48% better than a conventional LSTM baseline.</p>
+      <p><a href="https://github.com/Parag-Pawar2004/Bifurcated-QLSTM-Battery-SOH">github.com/Parag-Pawar2004/Bifurcated-QLSTM-Battery-SOH</a></p>
+      <ul class="tags"><li>variational circuits</li><li>Qiskit</li><li>quantum machine learning</li><li>time series</li></ul>
+    </article>
+
+    <article class="card">
+      <h3>Industry experience</h3>
+      <ul class="plain">
+        <li><strong>Telemetry AI Intern, Spaceborn (DERYK Team)</strong>, June to September 2026: fine-tuned RT-DETR object detection on VisDrone aerial imagery; built Python and ZeroMQ real-time telemetry pipelines for anomaly detection and a typed, tested LiDAR and camera ingestion framework.</li>
+        <li><strong>AI Intern and Team Lead (team of 5), Infosys Springboard</strong>, September to November 2025: led an end-to-end e-commerce competitor tracking framework with Playwright scrapers for live pricing data and a Random Forest model for real-time analysis.</li>
+      </ul>
+    </article>
+
+    <article class="card" id="p3">
+      <h3>Competitions and awards</h3>
+      <ul class="plain">
+        <li><a href="https://www.kaggle.com/competitions/google-verifiable-quantum-circuit-compilation">Google Verifiable Quantum Circuit Compilation</a> (Kaggle, active): rank 221 of 2,681 at last check.</li>
+        <li>Kaggle Competitions Expert.</li>
+        <li>Silver medal, <a href="https://www.kaggle.com/competitions/deep-past-initiative-machine-translation">Deep Past Challenge: Translate Akkadian to English</a>: rank 125 of 2,673 (March 2026).</li>
+        <li>Bronze medal, <a href="https://www.kaggle.com/competitions/biohub-cell-tracking-during-development">Biohub: Cell Tracking During Development</a>: rank 392 of 3,947.</li>
+        <li>Rank 5 of 58, <a href="https://www.kaggle.com/competitions/genuityxethos">Genuity x Ethos Synthetic Data Challenge</a>.</li>
+        <li>Generative AI discovery of spintronic perovskites, validated with Quantum ESPRESSO DFT (ongoing).</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<section id="education">
+  <h2>Education</h2>
+  <dl class="kv">
+    <dt>2023 to 2027</dt><dd><strong>BSc (Hons) Data Science and AI</strong>, Indian Institute of Technology Guwahati</dd>
+    <dt>2023 to 2027</dt><dd><strong>BTech Metallurgy and Material Technology</strong>, COEP Technological University, Pune. Minor in Quantum Computing.</dd>
+    <dt>IIT Madras</dt><dd>BS programme in Electronic Systems, exiting with a diploma</dd>
+  </dl>
+  <h2 style="margin-top:18px">Certificates</h2>
+  <div>
+    <ul class="plain">
+      <li>Packt Quantum Computing specialisation (Coursera, June 2025): quantum mechanics foundations, Python for quantum computing, Qiskit and advanced algorithms.</li>
+      <li>IISc via Coursera (January 2026): Fundamentals of Sensors; Micro Electromechanical Systems.</li>
+      <li>NPTEL Topper: Computational Methods in Materials Science and Engineering (July to October 2026).</li>
+      <li>University of Manchester: Introduction to Molecular Spectroscopy (2024). University of Michigan: AI for Design and Optimization (2025).</li>
+      <li>COEP quantum computing practicals in Qiskit and Cirq.</li>
+    </ul>
+  </div>
+  <h2 style="margin-top:18px">Fellowships</h2>
+  <div>
+    <ul class="plain">
+      <li>Samsung Fellowship (Grade III), India Semiconductor Workforce Development Program, IISc and Samsung Semiconductor India Research, June to August 2026. Advanced level (2D/3D process and device simulation): 94%, 90.28 percentile.</li>
+      <li>AWS–Udacity Nanodegree Scholar, Agentic AI for Business Intelligence (2026).</li>
+      <li>Undergraduate Summer Research Fellowship, Amity University, Noida.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <dl class="kv">
+    <dt>Quantum</dt><dd>Qiskit (Aer, IBM hardware), Cirq, PennyLane, pytket, QAOA, variational circuits, QUBO and Ising encodings, error mitigation basics, OpenQASM</dd>
+    <dt>Computation</dt><dd>Python, PyTorch, NumPy, SciPy, C, MATLAB, Linux, Git, LaTeX</dd>
+    <dt>Materials simulation</dt><dd>Quantum ESPRESSO, LAMMPS, EAM potentials, ASE, PyMatGen, Matminer</dd>
+    <dt>Machine learning</dt><dd>Deep learning, generative models, time series, NLP, computer vision</dd>
+  </dl>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div>
+    <p style="margin-top:0">Open to winter research internships (1 to 2 months from 14 December 2026) in quantum algorithms, quantum optimisation, quantum sensing and quantum materials.</p>
+    <dl class="kv">
+      <dt>Email</dt><dd>p.parag@op.iitg.ac.in · pagpar2004@gmail.com</dd>
+      <dt>GitHub</dt><dd><a href="https://github.com/Parag-Pawar2004">github.com/Parag-Pawar2004</a></dd>
+      <dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/parag-pawar-1109a320a">linkedin.com/in/parag-pawar-1109a320a</a></dd>
+    </dl>
+  </div>
+</section>
+</div>
+<footer><div class="wrap">Unpublished work is shown by status only. Details on request.</div></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var stage=document.getElementById('stage'); if(!stage) return;
+  if(!window.THREE){stage.style.display='none';return;}
+  var canvas=document.getElementById('c3d'), tip=document.getElementById('tip');
+  var cs=getComputedStyle(document.documentElement);
+  function col(v,f){var x=cs.getPropertyValue(v).trim();return new THREE.Color(x||f);}
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  var scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(40,1,0.1,50); cam.position.set(0,0.6,8.4); cam.lookAt(0,0,0);
+  var ink=col('--ink','#141A21'), mut=col('--muted','#56606B'), acc=col('--accent','#A8481F');
+  var root=new THREE.Group(); scene.add(root); root.rotation.x=0.35;
+  var R=1.6;
+  var sph=new THREE.Mesh(new THREE.SphereGeometry(R,28,20),new THREE.MeshBasicMaterial({color:mut,wireframe:true,transparent:true,opacity:0.13}));
+  root.add(sph);
+  function ring(rot){var pts=[];for(var i=0;i<=96;i++){var t=i/96*Math.PI*2;pts.push(new THREE.Vector3(Math.cos(t)*R,Math.sin(t)*R,0));}
+    var l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:ink,transparent:true,opacity:0.55}));l.rotation.set(rot[0],rot[1],rot[2]);root.add(l);}
+  ring([Math.PI/2,0,0]); ring([0,0,0]); ring([0,Math.PI/2,0]);
+  var ax=new THREE.LineBasicMaterial({color:mut,transparent:true,opacity:0.7});
+  [[0,1.9,0,0,-1.9,0],[1.9,0,0,-1.9,0,0],[0,0,1.9,0,0,-1.9]].forEach(function(a){
+    root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(a[0],a[1],a[2]),new THREE.Vector3(a[3],a[4],a[5])]),ax));});
+  function label(txt,size,color,bg){var c=document.createElement('canvas');c.width=512;c.height=96;var g=c.getContext('2d');
+    g.font='500 54px IBM Plex Mono, monospace';var w=g.measureText(txt).width+36;g.clearRect(0,0,512,96);
+    if(bg){g.fillStyle=bg;g.fillRect(256-w/2,10,w,76);}g.fillStyle=color;g.textAlign='center';g.textBaseline='middle';g.fillText(txt,256,50);
+    var t=new THREE.CanvasTexture(c);var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false}));sp.scale.set(size,size*96/512,1);return sp;}
+  var inkHex='#'+ink.getHexString(), mutHex='#'+mut.getHexString();
+  var l0=label('|0⟩',0.55,inkHex);l0.position.set(0,2.15,0);root.add(l0);
+  var l1=label('|1⟩',0.55,inkHex);l1.position.set(0,-2.15,0);root.add(l1);
+  // state vector
+  var arrow=new THREE.ArrowHelper(new THREE.Vector3(1,0,0),new THREE.Vector3(0,0,0),R,acc.getHex(),0.28,0.16);root.add(arrow);
+  var trail=[];for(var i=0;i<60;i++)trail.push(new THREE.Vector3());
+  var trailLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints(trail),new THREE.LineBasicMaterial({color:acc,transparent:true,opacity:0.5}));root.add(trailLine);
+  // work nodes
+  var work=[
+   {id:'r1',t:'Spectral bounds',s:'Under review · reset-gated quantum recurrent maps'},
+   {id:'r2',t:'Quantum memory',s:'Under submission · tracking drifting sources on hardware'},
+   {id:'r3',t:'Fe–Cr–Ni QUBO',s:'Manuscript complete · QUBO + QAOA on IBM hardware'},
+   {id:'r4',t:'Adaptive sensing',s:'In preparation · noisy-qubit metrology'},
+   {id:'r5',t:'CertiPES',s:'In preparation · certified PES simulation'},
+   {id:'p1',t:'Traffic QAOA',s:'Public code · Qiskit Fall Fest 2026'},
+   {id:'p2',t:'Battery QLSTM',s:'Public code · variational quantum LSTM'}];
+  var nodes=[],pickables=[],N=work.length;
+  work.forEach(function(w,i){
+    var y=1-(i+0.5)/N*2, r=Math.sqrt(1-y*y), th=i*2.399963;
+    var p=new THREE.Vector3(Math.cos(th)*r,y,Math.sin(th)*r).multiplyScalar(R);
+    var m=new THREE.Mesh(new THREE.SphereGeometry(0.11,16,12),new THREE.MeshBasicMaterial({color:i<5?acc:ink}));
+    m.position.copy(p);m.userData=w;root.add(m);pickables.push(m);nodes.push(m);
+    var halo=new THREE.Mesh(new THREE.SphereGeometry(0.2,16,12),new THREE.MeshBasicMaterial({color:acc,transparent:true,opacity:0}));halo.position.copy(p);halo.userData=w;root.add(halo);pickables.push(halo);m.userData.halo=halo;
+    root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),p]),new THREE.LineBasicMaterial({color:mut,transparent:true,opacity:0.25})));
+    var lb=label(w.t,1.6,inkHex);lb.position.copy(p.clone().multiplyScalar(1.25));lb.material.opacity=0.95;root.add(lb);
+  });
+  function size(){var w=stage.clientWidth;renderer.setSize(w,w,false);cam.aspect=1;cam.updateProjectionMatrix();}
+  size();addEventListener('resize',size);
+  // interaction
+  var drag=false,moved=0,lx=0,ly=0,vy=reduce?0:0.004,hover=null,ray=new THREE.Raycaster(),mouse=new THREE.Vector2(),t0=0;
+  function pos(e){var r=canvas.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;}
+  canvas.addEventListener('pointerdown',function(e){drag=true;moved=0;lx=e.clientX;ly=e.clientY;try{canvas.setPointerCapture(e.pointerId);}catch(_){}});
+  canvas.addEventListener('pointermove',function(e){
+    pos(e);
+    if(drag){var dx=e.clientX-lx,dy=e.clientY-ly;moved+=Math.abs(dx)+Math.abs(dy);root.rotation.y+=dx*0.01;root.rotation.x=Math.max(-1.2,Math.min(1.2,root.rotation.x+dy*0.01));lx=e.clientX;ly=e.clientY;}
+    ray.setFromCamera(mouse,cam);var h=ray.intersectObjects(pickables)[0];
+    hover=h?h.object.userData:null;
+    if(hover){tip.textContent=hover.t+' — '+hover.s;tip.classList.add('on');canvas.style.cursor='pointer';}else{tip.classList.remove('on');canvas.style.cursor=drag?'grabbing':'grab';}
+  });
+  canvas.addEventListener('pointerup',function(e){
+    drag=false;
+    if(moved<6){pos(e);ray.setFromCamera(mouse,cam);var h=ray.intersectObjects(pickables)[0];
+      if(h){var el=document.getElementById(h.object.userData.id);if(el){el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}}}
+  });
+  canvas.addEventListener('pointerleave',function(){hover=null;tip.classList.remove('on');});
+  var vis=true; if('IntersectionObserver' in window){new IntersectionObserver(function(en){vis=en[0].isIntersecting;}).observe(stage);}
+  function frame(t){
+    requestAnimationFrame(frame); if(!vis) return;
+    if(!drag&&!hover)root.rotation.y+=vy;
+    var ph=reduce?0.8:t*0.0011, th=1.0+0.45*Math.sin(t*0.00031);
+    var d=new THREE.Vector3(Math.sin(th)*Math.cos(ph),Math.cos(th),Math.sin(th)*Math.sin(ph));
+    arrow.setDirection(d);
+    for(var i=59;i>0;i--)trail[i].copy(trail[i-1]);
+    var tp=d.clone().multiplyScalar(R);trail[0].copy(tp);
+    trailLine.geometry.setFromPoints(trail);
+    nodes.forEach(function(n){n.userData.halo.material.opacity=(hover&&hover.id===n.userData.id)?0.35:0;});
+    renderer.render(scene,cam);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
